@@ -2783,21 +2783,22 @@ IedConnection_getLogicalNodeDirectory(IedConnection self, IedClientError* error,
                         goto next_element;
 
                     int lnNameLen = (int)(fcPos - variableName);
-
-                    if (strncmp(variableName, logicalNodeName, lnNameLen) == 0)
-                    {
-                        char* fcEndPos = strchr(fcPos + 1, '$');
-
-                        if (fcEndPos)
+                    if (strlen(logicalNodeName) == lnNameLen){
+                        if (strncmp(variableName, logicalNodeName, lnNameLen) == 0)
                         {
-                            char* nameEndPos = strchr(fcEndPos + 1, '$');
-
-                            if (nameEndPos == NULL)
+                            char* fcEndPos = strchr(fcPos + 1, '$');
+    
+                            if (fcEndPos)
                             {
-                                char* dataObjectName = StringUtils_copyString(fcEndPos + 1);
-
-                                if (!addToStringSet(lnDirectory, dataObjectName))
-                                    GLOBAL_FREEMEM(dataObjectName);
+                                char* nameEndPos = strchr(fcEndPos + 1, '$');
+    
+                                if (nameEndPos == NULL)
+                                {
+                                    char* dataObjectName = StringUtils_copyString(fcEndPos + 1);
+    
+                                    if (!addToStringSet(lnDirectory, dataObjectName))
+                                        GLOBAL_FREEMEM(dataObjectName);
+                                }
                             }
                         }
                     }
@@ -2929,10 +2930,11 @@ IedConnection_getLogicalNodeVariables(IedConnection self, IedClientError* error,
         if (fcPos)
         {
             int lnNameLen = (int)(fcPos - variableName);
-
-            if (strncmp(variableName, logicalNodeName, lnNameLen) == 0)
-            {
-                LinkedList_add(lnDirectory, StringUtils_copyString(fcPos + 1));
+            if (strlen(logicalNodeName) == lnNameLen){
+                if (strncmp(variableName, logicalNodeName, lnNameLen) == 0)
+                {
+                    LinkedList_add(lnDirectory, StringUtils_copyString(fcPos + 1));
+                }
             }
         }
 
