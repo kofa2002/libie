@@ -2106,6 +2106,8 @@ mmsClient_getNameList(MmsConnection self, MmsError *mmsError,
             err = parameter.err;
             list = parameter.nameList;
             moreFollows = parameter.moreFollows;
+        } else {
+            moreFollows = false;
         }
 
         Semaphore_destroy(parameter.sem);
